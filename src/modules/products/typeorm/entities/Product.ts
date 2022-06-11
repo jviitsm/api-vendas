@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity('products')
-class Product {
+export default class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -20,5 +20,3 @@ class Product {
   @Column('timestamp with time zone', { default: 'now()' })
   updated_at: Date;
 }
-
-export default Product;
