@@ -3,6 +3,8 @@ import User from '../typeorm/entities/User';
 import AppError from '@shared/errors/AppError';
 import UsersRepository from '../typeorm/repositories/UsersRepository';
 import { compare } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
+import environment from '@config/environment';
 
 interface IRequest {
   email: string;
@@ -11,6 +13,7 @@ interface IRequest {
 
 interface IResponse {
   user: User;
+  token: string;
 }
 
 class CreateSessionsService {
@@ -28,7 +31,12 @@ class CreateSessionsService {
       throw new AppError('Invalid credentials.', 401);
     }
 
-    return { user };
+    const token = sign({}, environment.jwtSecret, {
+      subject: user.id,
+      expiresIn: '1d',
+    });
+
+    return { user, token };
   }
 }
 

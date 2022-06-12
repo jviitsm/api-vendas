@@ -6,6 +6,7 @@ import { errors } from 'celebrate';
 import routes from './routes';
 import AppError from '@shared/errors/AppError';
 import '@shared/typeorm';
+import environment from '@config/environment';
 
 const app = express();
 
@@ -30,6 +31,6 @@ app.use(
   },
 );
 
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
+app.listen(environment.port, () => {
+  console.log(`Server is running on port ${environment.port}`);
 });
