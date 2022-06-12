@@ -2,6 +2,7 @@ import { getCustomRepository } from 'typeorm';
 import User from '../typeorm/entities/User';
 import AppError from '@shared/errors/AppError';
 import UsersRepository from '../typeorm/repositories/UsersRepository';
+import { hash } from 'bcryptjs';
 
 interface IRequest {
   name: string;
@@ -22,7 +23,7 @@ class CreateUserService {
     const user = usersRepository.create({
       name,
       email,
-      password,
+      password: await hash(password, 8),
     });
 
     await usersRepository.save(user);
