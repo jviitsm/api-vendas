@@ -4,7 +4,7 @@ import AppError from '@shared/errors/AppError';
 import UsersRepository from '../typeorm/repositories/UsersRepository';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
-import environment from '@config/environment';
+import authConfig from '@config/auth';
 
 interface IRequest {
   email: string;
@@ -31,9 +31,9 @@ class CreateSessionsService {
       throw new AppError('Invalid credentials.', 401);
     }
 
-    const token = sign({}, environment.jwtSecret, {
+    const token = sign({}, authConfig.jwt.secret, {
       subject: user.id,
-      expiresIn: '1d',
+      expiresIn: authConfig.jwt.expiresIn,
     });
 
     return { user, token };
