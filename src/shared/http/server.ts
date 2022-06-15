@@ -21,16 +21,17 @@ app.use(routes);
 app.use(errors());
 
 app.use(
-  (error: Error, request: Request, respone: Response, next: NextFunction) => {
+  (error: Error, request: Request, response: Response, next: NextFunction) => {
     if (error instanceof AppError) {
-      return respone.status(error.statusCode).json({
+      return response.status(error.statusCode).json({
         status: 'error',
         message: error.message,
       });
     }
-    return respone.status(500).json({
+    console.log(error);
+    return response.status(500).json({
       status: 'error',
-      message: 'Internal Server Error',
+      message: error.message,
     });
   },
 );
